@@ -1,0 +1,10 @@
+CREATE TABLE `fanart` (
+	`channel`	TEXT,
+	`id`	TEXT,
+	`type`	TEXT,
+    `msg_id`	TEXT,
+	`message`	TEXT,
+    `timestamp`	TEXT,
+	UNIQUE(channel, id, type) ON CONFLICT IGNORE
+);
+

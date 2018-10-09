@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
+    <script src="https://unpkg.com/chart.js@2.7.2/dist/Chart.bundle.js"></script>
+    <script src="https://unpkg.com/vue-chartkick@0.5.0"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <v-app dark>
+            <v-content>
+                <a href="https://github.com/Nodja/joevotes">
+                    <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png"
+                        alt="Fork me on GitHub">
+                </a>
+                <v-container grid-list-md>
+                    <v-layout row wrap>
+                        <v-flex xs10 offset-xs1 text-xs-center>
+                            <h1> {{ page_title }} </h1>
+                            To vote you need to have joined discord before the voting started (you'll have the
+                            halloween voter role) and go on the #halloween-voting-event
+                            channel on <a href="https://discordapp.com/invite/8gSBsYC">the discord server</a>.
+                            <br><br>
+                            {{ total_voters }} people have voted. <br>
+                            {{ nontop_voters }} people have not voted in the top {{ top }}. <br><br>
+                            <template v-if="specials['LEON']">
+                                {{ specials['LEON'] }} out of 11037 people like to drive memes to the ground (LEON
+                                votes) <br>
+                            </template>
+                        </v-flex>
+                    </v-layout>
+                    <v-layout child-flex>
+                        <v-data-table :items="votes" hide-headers hide-actions>
+                            <template slot="items" slot-scope="props">
+                                <td class="text-xs-right" style="width: 2%">{{ props.index + 1 }}</td>
+                                <td class="text-xs-right" style="width: 10%; min-width: 300px;">{{ props.item['game'] }}</td>
+                                <td class="text-xs-right" style="width: 5%; min-width: 100px;">
+                                    <v-tooltip right>
+                                        <span slot="activator">
+                                            {{ props.item['yay'] }}
+                                            <span v-if="props.item.yay_rounds.length !== 0">(<vote-diff :diff="props.item['votes'] - props.item.yay_rounds[0]"></vote-diff>)</span>
+                                        </span>
+                                        <table class="tooltip-table">
+                                            <tr>
+                                                <td v-for="(vote, index) in props.item.yay_rounds">Round {{ index + 1 }}</td>
+                                                <td>Current Round</td>
+                                            </tr>
+                                            <tr>
+                                                <td v-for="(vote, index) in props.item.yay_rounds">
+                                                    {{ yay }}
+                                                    <span v-if="index !== 0">(<vote-diff :diff="vote - props.item.yay_rounds[index - 1] "></vote-diff>)</span>
+                                                </td>
+                                                <td>
+                                                    {{ props.item['yay'] }}
+                                                    <span v-if="props.item.yay_rounds.length !== 0">(<vote-diff :diff="props.item['votes'] - props.item.yay_rounds[props.item.yay_rounds.length - 1] "></vote-diff>)</span>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </v-tooltip>
+
+                                </td>
+                                <td style="width: 100%; min-width: 100px;">
+                                    <v-layout row align-space-around fill-height>
+                                        <div :style="{ width: props.item['percentage'] + '%' , 'background-color': '#1976d2'}"></div>
+                                        <div :style="{ width: 100 - props.item['percentage'] + '%',  'background-color': '#1976d2', opacity: '0.3'}"></div>
+                                    </v-layout>
+                                </td>
+                            </template>
+                        </v-data-table>
+                    </v-layout>
+
+                    <v-flex text-xs-center><br>@Nodja</v-flex>
+
+                </v-container>
+
+                <transition name="fade">
+                    <div v-if="show_flashback" style="width: 100%; height: 100%; display:block; position:fixed; top: 0; bottom: 0; pointer-events:none;">
+                        <img :src="show_flashback ? '/static/flashback.png' : ''" width="100%">
+                    </div>
+                </transition>
+            </v-content>
+        </v-app>
+
+        <votediff inline-template>
+            <span style="color: greenyellow" v-if="diff > 0">
+                +{{ diff }}
+            </span>
+            <span style="color: red" v-else-if="diff < 0">
+                -{{ diff }}
+            </span>
+            <span v-else>
+                {{ 0 }}
+            </span>
+        </votediff>
+    </div>
+
+    <script>
+        function comparator(a, b) {
+            if (a['yay'] < b['yay']) return 1;
+            if (a['yay'] > b['yay']) return -1;
+            return 0;
+        }
+
+        Vue.component('votediff', {
+            props: ['diff']
+
+        });
+
+        new Vue({
+            el: '#app',
+            methods: {
+                randomTimerBG() {
+                    setTimeout(function () {
+                        this.show_flashback = true;
+                        setTimeout(function () {
+                            this.show_flashback = false;
+                            this.randomTimerBG();
+                        }.bind(this), 1000);
+                    }.bind(this), (Math.floor(Math.random() * 45) + 15) * 1000);
+                }
+            },
+            mounted() {
+                document.title = this.page_title;
+
+                this.randomTimerBG();
+                this.socket.on('vote change', (data) => {
+                    this.total_voters = data['total_voters'];
+                    this.nontop_voters = data['nontop_voters'];
+                    this.top = data['top'];
+
+                    var votes = data['votes'];
+                    for (var vote in votes) {
+                        var found = false;
+                        for (var i in this.votes) {
+                            if (this.votes[i]['game'] === votes[vote]['game']) {
+                                Vue.set(this.votes, i, votes[vote])
+                                found = true;
+                            }
+
+                        }
+                        if (!found)
+                            this.votes.push(votes[vote])
+                    }
+                    this.votes.sort(comparator);
+                    var votes_max = Math.floor(this.votes[0]['yay']);
+                    for (var vote of this.votes) {
+                        vote['percentage'] = vote['yay'] / votes_max * 100;
+                    }
+                });
+            },
+            data: {
+                page_title: "The Biggest, Most Awful, Most Tragic Joseph Anderson's Voting Poll",
+                votes: [],
+                total_voters: 0,
+                nontop_voters: 0,
+                specials: {},
+                top: 0,
+                show_flashback: false,
+                socket: io('/joevotes'),
+            }
+        })
+    </script>
+
+    <style>
+        table.tooltip-table {
+            border-collapse: collapse;
+            border: 1px solid white;
+        }
+
+        table.tooltip-table td,
+        table.tooltip-table tr {
+            border: 1px solid white;
+            text-align: center;
+        }
+
+        table.tooltip-table td {
+            padding: 3px;
+        }
+
+
+
+
+        table.v-table tbody td,
+        table.v-table tbody th {
+            height: 25px;
+            padding-right: 10px !important;
+            padding-left: 0px !important;
+        }
+
+        .fade-enter-active,
+        .fade-leave-active {
+            transition: opacity 2s;
+        }
+
+        .fade-enter,
+        .fade-leave-to {
+            opacity: 0;
+        }
+
+        .fade-enter-to,
+        .fade-leave {
+            opacity: 0.1;
+        }
+    </style>
+</body>
+
+</html>

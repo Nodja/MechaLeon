@@ -49,10 +49,10 @@
                                         <v-card>
                                             <v-card-text>
                                                 <v-layout row>
-                                                    <div style="min-width: 120px" class="font-weight-black">
+                                                    <div style="min-width: 120px; max-width: 120px" class="font-weight-black">
                                                         {{item.date }}
                                                     </div>
-                                                    <div class="font-weight-black">
+                                                    <div class="font-weight-black text-no-wrap">
                                                         {{ item.header }}
                                                     </div>
                                                 </v-layout>
@@ -138,6 +138,13 @@
                         icon: 'anime'
                     },
                     {
+                        date: 'Late November',
+                        header: 'Vampire: The Masquerade',
+                        text: "Winner of the September poll",
+                        color: 'blue',
+                        icon: ''
+                    },
+                    {
                         header: "Games with no date but joe pinky swears they\'ll be played. Sequence unknown.",
                         color: 'black',
                         icon: 'none'
@@ -151,15 +158,8 @@
                     },
                     {
                         date: '11037 A.D.',
-                        header: 'Vampire: The Masquerade',
-                        text: "Winner of the September poll",
-                        color: 'blue',
-                        icon: '?'
-                    },
-                    {
-                        date: '11037 A.D.',
                         header: 'Ace Attorney',
-                        text: "Winner of the September poll",
+                        text: "Winner of the September poll. Joe will wait for the switch release, if the release takes too long he will play it on another platform.",
                         color: 'blue',
                         icon: '?'
                     },

@@ -1,1 +1,1 @@
-web: python joevotes\joevotes.py $PORT
+web: python web.py $PORT

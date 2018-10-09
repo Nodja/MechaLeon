@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/vuetify/1.3.0-alpha.1/vuetify.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    <link rel="stylesheet" href="//cdn.materialdesignicons.com/2.8.94/css/materialdesignicons.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vuetify/1.3.0-alpha.1/vuetify.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <v-app dark>
+            <v-content>
+                <a href="https://github.com/Nodja/MechaLeon">
+                    <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png"
+                        alt="Fork me on GitHub">
+                </a>
+                <v-container>
+                    <v-layout row wrap>
+                        <v-flex xs10 offset-xs1 text-xs-center>
+                            Full use case <br>
+                        </v-flex>
+                        <v-flex xs10 offset-xs1>
+                            <v-timeline dense>
+
+                                <template v-for="(item, i) in items">
+                                    <v-timeline-item v-if="item.icon === 'none'" :color="item.color" small>
+                                        <v-card color="black">
+                                            <v-card-text class="caption">
+                                                {{ item.header }}
+                                            </v-card-text>
+                                        </v-card>
+                                    </v-timeline-item>
+                                    <v-timeline-item v-else :key="i" :color="item.color" large>
+                                        <div slot="icon">
+                                            <svg v-if="item.icon === 'pumpkin'" style="width:24px;height:24px" viewBox="0 0 24 24">
+                                                <path fill="#FFFFFF" d="M6.5,6C7.47,6 8.37,6.5 9.11,7.38C9.66,6.79 10.31,6.36 11,6.15V4A2,2 0 0,1 13,2H15V4H13V6.15C13.69,6.36 14.34,6.79 14.89,7.38C15.63,6.5 16.53,6 17.5,6C20,6 22,9.36 22,13.5C22,17.64 20,21 17.5,21C16.53,21 15.63,20.5 14.89,19.62C14.08,20.5 13.08,21 12,21C10.92,21 9.92,20.5 9.11,19.62C8.37,20.5 7.47,21 6.5,21C4,21 2,17.64 2,13.5C2,9.36 4,6 6.5,6M9,10L7.75,12.25H10.25L9,10M15,10L13.75,12.25H16.25L15,10M8,17H10L11,16L12,17H14L15,16L16,17L17.5,14L13.92,14.62L13,16L12,15H10L9,16L8,15L6,14L8,17Z" />
+                                            </svg>
+                                            <img v-else-if="item.icon === 'anime'" src="/static/catgirl.svg">
+                                            <v-icon v-else>{{ item.icon }}</v-icon>
+                                        </div>
+                                        <v-card>
+                                            <v-card-text>
+                                                <v-layout row>
+                                                    <div style="min-width: 120px" class="font-weight-black">
+                                                        {{item.date }}
+                                                    </div>
+                                                    <div class="font-weight-black">
+                                                        {{ item.header }}
+                                                    </div>
+                                                </v-layout>
+                                                <v-layout class="caption">
+                                                    <div style="min-width: 120px"></div>
+                                                    {{ item.text }}
+                                                </v-layout>
+                                            </v-card-text>
+                                        </v-card>
+                                    </v-timeline-item>
+                                </template>
+                            </v-timeline>
+                        </v-flex>
+                    </v-layout>
+                </v-container>
+            </v-content>
+        </v-app>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+
+            data: {
+                items: [
+                    {
+                        header: 'October games will be played in order until october ends.',
+                        color: 'black',
+                        icon: 'none'
+                    },
+                    {
+                        date: 'October 10 2018',
+                        header: 'Silent Hill 2',
+                        color: 'orange',
+                        icon: 'pumpkin'
+                    },
+                    {
+                        date: 'October',
+                        header: 'I Have No Mouth And I Must Scream',
+                        color: 'orange',
+                        icon: 'pumpkin'
+                    },
+                    {
+                        date: 'October',
+                        header: 'Luigi\'s Mansion',
+                        color: 'orange',
+                        icon: 'pumpkin'
+                    },
+                    {
+                        date: 'October',
+                        header: 'Alien Isolation',
+                        color: 'orange',
+                        icon: 'pumpkin'
+                    },
+                    {
+                        date: 'October',
+                        header: 'Corpse Party',
+                        color: 'orange',
+                        icon: 'pumpkin'
+                    },
+                    {
+                        date: 'October',
+                        header: 'Dead Space 1',
+                        color: 'orange',
+                        icon: 'pumpkin'
+                    },
+                    {
+                        date: 'October',
+                        header: 'Metro 2033',
+                        color: 'orange',
+                        icon: 'pumpkin'
+                    },
+                    {
+                        header: 'Post-october games',
+                        color: 'black',
+                        icon: 'none'
+                    },
+                    {
+                        date: 'November',
+                        header: 'Danganronpa V3',
+                        text: "The anime will probably be played on stream before the game.",
+                        color: 'blue',
+                        icon: 'anime'
+                    },
+                    {
+                        header: "Games with no date but joe pinky swears they\'ll be played. Sequence unknown.",
+                        color: 'black',
+                        icon: 'none'
+                    },
+                    {
+                        date: '11037 A.D.',
+                        header: 'David Cage Marathon',
+                        text: "Omikron: The Nomad Soul, Fahrenheit, Heavy Rain, Beyond: Two Souls, Detroit: Become Human. There's a chance omikron might not be played.",
+                        color: 'blue',
+                        icon: '?'
+                    },
+                    {
+                        date: '11037 A.D.',
+                        header: 'Vampire: The Masquerade',
+                        text: "Winner of the September poll",
+                        color: 'blue',
+                        icon: '?'
+                    },
+                    {
+                        date: '11037 A.D.',
+                        header: 'Ace Attorney',
+                        text: "Winner of the September poll",
+                        color: 'blue',
+                        icon: '?'
+                    },
+                    {
+                        date: '11037 A.D.',
+                        header: 'Catherine',
+                        text: 'Winner of the September poll. "Catherine will be played when the Remaster/Remake is released in the west. At launch." - JA on discord',
+                        color: 'blue',
+                        icon: '?'
+                    },
+                    {
+                        date: '11037 A.D.',
+                        header: 'Portal 1 + 2',
+                        text: "Got so many votes in the September poll that it got auto-added to joe's schedule before the poll ended.",
+                        color: 'blue',
+                        icon: '?'
+                    },
+                    {
+                        date: '11037 A.D.',
+                        header: 'Yakuza 0',
+                        text: "Joe promised he would play it at the end of the Spider-Man stream.",
+                        color: 'blue',
+                        icon: '?'
+                    },
+
+                    
+                ]
+            }
+        })
+    </script>
+
+    <style>
+
+    </style>
+</body>
+
+</html>

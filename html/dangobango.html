@@ -13,6 +13,7 @@
 
     <link href="https://vjs.zencdn.net/7.2.3/video-js.css" rel="stylesheet">
     <script src="https://vjs.zencdn.net/7.2.3/video.js"></script>
+    <script src="https://unpkg.com/videojs-hotkeys"></script>
 
 
 
@@ -108,7 +109,10 @@
             },
 
             mounted() {
-                this.player = videojs('vid_player');
+                this.player = videojs('vid_player').ready(function () {
+                    this.hotkeys({});
+                });
+
                 var v = this;
 
                 this.player.on('ended', function () {

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/vuetify/1.3.0-alpha.1/vuetify.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vuetify/1.3.0-alpha.1/vuetify.js"></script>
+    <script src="https://unpkg.com/vue-ls@3.2.0/dist/vue-ls.min.js"></script>
+
+    <link href="https://vjs.zencdn.net/7.2.3/video-js.css" rel="stylesheet">
+    <script src="https://vjs.zencdn.net/7.2.3/video.js"></script>
+
+
+
+
+    <title>Dangobango 3 total legit streams </title>
+</head>
+
+<body>
+
+
+    <div id="app">
+        <v-app dark>
+            <v-content>
+                <a href="https://github.com/Nodja/MechaLeon">
+                    <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png"
+                        alt="Fork me on GitHub">
+                </a>
+                <v-container>
+                    <v-layout row wrap>
+                        <v-flex xs10 offset-xs1 text-xs-center>
+                            Dangobango 3 total legit streams <br>
+                        </v-flex>
+                        <v-flex xs10 offset-xs1 text-xs-center>
+                            <video id="vid_player" controls class="video-js vjs-default-skin vjs-big-play-centered vjs-16-9" preload="true" data-setup='{}'>
+                                <source src="https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa%203%20EP01%20-%20Future%20Arc%201/1080p.m3u8"
+                                    type='application/x-mpegURL'>
+                            </video>
+                            <v-layout align-center justify-end>
+                                <v-btn @click="openPopup()">Time Popup</v-btn>
+                                <span>
+                                    Autoplay next episode
+                                </span>
+                                <div style="padding-left: 5px">
+                                    <v-switch v-model="autoplay"></v-switch>
+                                </div>
+                            </v-layout>
+
+                            <v-data-table :items="episodes" hide-headers hide-actions>
+                                <template slot="items" slot-scope="props">
+                                    <td @click="playEpisode(props.item)" class="text-xs-right" style="width: 10px">{{ props.index + 1 }}</td>
+                                    <td @click="playEpisode(props.item)" class="text-xs-right" style="width: 10px">
+                                        <span v-if="props.item['playing']">
+                                            >
+                                        </span>
+                                    </td>
+                                    <td @click="playEpisode(props.item)" class="text-xs-left" style="min-width: 300px;">{{ props.item['name'] }}</td>
+                                </template>
+                            </v-data-table>
+                        </v-flex>
+                    </v-layout>
+                </v-container>
+            </v-content>
+        </v-app>
+    </div>
+
+    <script>
+        Vue.use(VueStorage);
+
+        new Vue({
+            el: '#app',
+
+            data: {
+                player: null,
+                episodes: [
+                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP01 - Future Arc 1/1080p.m3u8", "name": "Danganronpa 3 EP01 - Future Arc 1", "playing": true },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP02 - Despair Arc 1/1080p.m3u8", "name": "Danganronpa 3 EP02 - Despair Arc 1", "playing": false },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP03 - Future Arc 2/1080p.m3u8", "name": "Danganronpa 3 EP03 - Future Arc 2", "playing": false },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP04 - Despair Arc 2/1080p.m3u8", "name": "Danganronpa 3 EP04 - Despair Arc 2", "playing": false },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP05 - Future Arc 3/1080p.m3u8", "name": "Danganronpa 3 EP05 - Future Arc 3", "playing": false },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP06 - Despair Arc 3/1080p.m3u8", "name": "Danganronpa 3 EP06 - Despair Arc 3", "playing": false },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP07 - Future Arc 4/1080p.m3u8", "name": "Danganronpa 3 EP07 - Future Arc 4", "playing": false },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP08 - Despair Arc 4/1080p.m3u8", "name": "Danganronpa 3 EP08 - Despair Arc 4", "playing": false },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP09 - Future Arc 5/1080p.m3u8", "name": "Danganronpa 3 EP09 - Future Arc 5", "playing": false },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP10 - Despair Arc 5/1080p.m3u8", "name": "Danganronpa 3 EP10 - Despair Arc 5", "playing": false },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP11 - Future Arc 6/1080p.m3u8", "name": "Danganronpa 3 EP11 - Future Arc 6", "playing": false },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP12 - Despair Arc 6/1080p.m3u8", "name": "Danganronpa 3 EP12 - Despair Arc 6", "playing": false },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP13 - Future Arc 7/1080p.m3u8", "name": "Danganronpa 3 EP13 - Future Arc 7", "playing": false },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP14 - Despair Arc 7/1080p.m3u8", "name": "Danganronpa 3 EP14 - Despair Arc 7", "playing": false },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP15 - Future Arc 8/1080p.m3u8", "name": "Danganronpa 3 EP15 - Future Arc 8", "playing": false },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP16 - Despair Arc 8/1080p.m3u8", "name": "Danganronpa 3 EP16 - Despair Arc 8", "playing": false },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP17 - Future Arc 9/1080p.m3u8", "name": "Danganronpa 3 EP17 - Future Arc 9", "playing": false },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP18 - Despair Arc 9/1080p.m3u8", "name": "Danganronpa 3 EP18 - Despair Arc 9", "playing": false },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP19 - Future Arc 10/1080p.m3u8", "name": "Danganronpa 3 EP19 - Future Arc 10", "playing": false },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP20 - Despair Arc 10/1080p.m3u8", "name": "Danganronpa 3 EP20 - Despair Arc 10", "playing": false },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP21 - Future Arc 11/1080p.m3u8", "name": "Danganronpa 3 EP21 - Future Arc 11", "playing": false },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP22 - Despair Arc 11/1080p.m3u8", "name": "Danganronpa 3 EP22 - Despair Arc 11", "playing": false },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP23 - Future Arc 12/1080p.m3u8", "name": "Danganronpa 3 EP23 - Future Arc 12", "playing": false },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP24 - Hope Arc/1080p.m3u8", "name": "Danganronpa 3 EP24 - Hope Arc", "playing": false },
+                ],
+                autoplay: false,
+                current_episode: {},
+                current_playing: {},
+            },
+
+            mounted() {
+                this.player = videojs('vid_player');
+                var v = this;
+
+                this.player.on('ended', function () {
+                    if (v.autoplay) {
+                        v.playNext();
+                    }
+
+                });
+                this.player.on('timeupdate', function () {
+                    v.current_playing = { name: v.current_episode['name'], time: this.currentTime() };
+                });
+
+                this.current_playing = this.$ls.set('current_playing', current_playing = { name: v.current_episode['name'], time: 0 });
+                this.current_episode = this.episodes[0];
+                this.$ls.on('current_playing', function (val) {
+                    v.current_playing = val;
+                });
+            },
+            methods: {
+                playEpisode: function (episode) {
+                    for (var ep of this.episodes) {
+                        ep['playing'] = false;
+                    }
+                    this.player.src({ type: 'application/x-mpegURL', src: episode['url'] });
+                    this.player.play();
+                    episode['playing'] = true;
+                    this.current_episode = episode;
+
+                },
+                playNext: function () {
+                    for (var i in this.episodes) {
+                        if (this.episodes[i]['playing']) {
+                            var next = parseInt(i) + 1;
+                            if (next >= this.episodes.length)
+                                break;
+                            this.playEpisode(this.episodes[next])
+                            break;
+                        }
+
+                    }
+                },
+                openPopup: function () {
+                    window.open('dangobango-popup',
+                        'newwindow',
+                        'width=600,height=150')
+                },
+            },
+            watch: {
+                current_playing: function (val) {
+                    this.$ls.set('current_playing', val)
+                }
+            },
+        })
+    </script>
+
+    <style>
+        .video-js {
+            width: 100%;
+            min-height: 720px;
+            height: 100%;
+
+        }
+
+        table.v-table tbody td,
+        table.v-table tbody th {
+            height: 30px;
+            padding-right: 5px !important;
+            padding-left: 5px !important;
+            cursor: pointer;
+        }
+    </style>
+</body>
+
+</html>

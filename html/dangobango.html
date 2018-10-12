@@ -43,6 +43,8 @@
                             </div>
 
                             <v-layout align-center justify-end :class="{hide: !current_episode['url']}">
+                                <h2> {{ current_episode['name'] }}</h2>
+                                <v-spacer></v-spacer>
                                 <v-btn @click="openPopup()">Time Popup</v-btn>
                                 <span>
                                     Autoplay next episode
@@ -79,30 +81,30 @@
             data: {
                 player: null,
                 episodes: [
-                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP01 - Future Arc 1/1080p.m3u8", "name": "Danganronpa 3 EP01 - Future Arc 1", "playing": false },
-                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP02 - Despair Arc 1/1080p.m3u8", "name": "Danganronpa 3 EP02 - Despair Arc 1", "playing": false },
-                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP03 - Future Arc 2/1080p.m3u8", "name": "Danganronpa 3 EP03 - Future Arc 2", "playing": false },
-                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP04 - Despair Arc 2/1080p.m3u8", "name": "Danganronpa 3 EP04 - Despair Arc 2", "playing": false },
-                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP05 - Future Arc 3/1080p.m3u8", "name": "Danganronpa 3 EP05 - Future Arc 3", "playing": false },
-                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP06 - Despair Arc 3/1080p.m3u8", "name": "Danganronpa 3 EP06 - Despair Arc 3", "playing": false },
-                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP07 - Future Arc 4/1080p.m3u8", "name": "Danganronpa 3 EP07 - Future Arc 4", "playing": false },
-                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP08 - Despair Arc 4/1080p.m3u8", "name": "Danganronpa 3 EP08 - Despair Arc 4", "playing": false },
-                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP09 - Future Arc 5/1080p.m3u8", "name": "Danganronpa 3 EP09 - Future Arc 5", "playing": false },
-                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP10 - Despair Arc 5/1080p.m3u8", "name": "Danganronpa 3 EP10 - Despair Arc 5", "playing": false },
-                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP11 - Future Arc 6/1080p.m3u8", "name": "Danganronpa 3 EP11 - Future Arc 6", "playing": false },
-                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP12 - Despair Arc 6/1080p.m3u8", "name": "Danganronpa 3 EP12 - Despair Arc 6", "playing": false },
-                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP13 - Future Arc 7/1080p.m3u8", "name": "Danganronpa 3 EP13 - Future Arc 7", "playing": false },
-                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP14 - Despair Arc 7/1080p.m3u8", "name": "Danganronpa 3 EP14 - Despair Arc 7", "playing": false },
-                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP15 - Future Arc 8/1080p.m3u8", "name": "Danganronpa 3 EP15 - Future Arc 8", "playing": false },
-                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP16 - Despair Arc 8/1080p.m3u8", "name": "Danganronpa 3 EP16 - Despair Arc 8", "playing": false },
-                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP17 - Future Arc 9/1080p.m3u8", "name": "Danganronpa 3 EP17 - Future Arc 9", "playing": false },
-                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP18 - Despair Arc 9/1080p.m3u8", "name": "Danganronpa 3 EP18 - Despair Arc 9", "playing": false },
-                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP19 - Future Arc 10/1080p.m3u8", "name": "Danganronpa 3 EP19 - Future Arc 10", "playing": false },
-                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP20 - Despair Arc 10/1080p.m3u8", "name": "Danganronpa 3 EP20 - Despair Arc 10", "playing": false },
-                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP21 - Future Arc 11/1080p.m3u8", "name": "Danganronpa 3 EP21 - Future Arc 11", "playing": false },
-                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP22 - Despair Arc 11/1080p.m3u8", "name": "Danganronpa 3 EP22 - Despair Arc 11", "playing": false },
-                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP23 - Future Arc 12/1080p.m3u8", "name": "Danganronpa 3 EP23 - Future Arc 12", "playing": false },
-                    { "url": "https://cloudflare-ipfs.com/ipfs/QmYHesFyWy8jBqUx8DcRMEGVqKe2jkGoxhryFE8gpYFx6T/Danganronpa 3 EP24 - Hope Arc/1080p.m3u8", "name": "Danganronpa 3 EP24 - Hope Arc", "playing": false },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/Qmde9qbdNTgp5mEzxS8iRgFTfcWmPNBMkC17peSKF9tPMo/Danganronpa 3 EP01 - Future Arc 1/1080p.m3u8", "name": "Danganronpa 3 EP01 - Future Arc 1", "playing": false },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/Qmde9qbdNTgp5mEzxS8iRgFTfcWmPNBMkC17peSKF9tPMo/Danganronpa 3 EP02 - Despair Arc 1/1080p.m3u8", "name": "Danganronpa 3 EP02 - Despair Arc 1", "playing": false },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/Qmde9qbdNTgp5mEzxS8iRgFTfcWmPNBMkC17peSKF9tPMo/Danganronpa 3 EP03 - Future Arc 2/1080p.m3u8", "name": "Danganronpa 3 EP03 - Future Arc 2", "playing": false },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/Qmde9qbdNTgp5mEzxS8iRgFTfcWmPNBMkC17peSKF9tPMo/Danganronpa 3 EP04 - Despair Arc 2/1080p.m3u8", "name": "Danganronpa 3 EP04 - Despair Arc 2", "playing": false },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/Qmde9qbdNTgp5mEzxS8iRgFTfcWmPNBMkC17peSKF9tPMo/Danganronpa 3 EP05 - Future Arc 3/1080p.m3u8", "name": "Danganronpa 3 EP05 - Future Arc 3", "playing": false },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/Qmde9qbdNTgp5mEzxS8iRgFTfcWmPNBMkC17peSKF9tPMo/Danganronpa 3 EP06 - Despair Arc 3/1080p.m3u8", "name": "Danganronpa 3 EP06 - Despair Arc 3", "playing": false },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/Qmde9qbdNTgp5mEzxS8iRgFTfcWmPNBMkC17peSKF9tPMo/Danganronpa 3 EP07 - Future Arc 4/1080p.m3u8", "name": "Danganronpa 3 EP07 - Future Arc 4", "playing": false },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/Qmde9qbdNTgp5mEzxS8iRgFTfcWmPNBMkC17peSKF9tPMo/Danganronpa 3 EP08 - Despair Arc 4/1080p.m3u8", "name": "Danganronpa 3 EP08 - Despair Arc 4", "playing": false },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/Qmde9qbdNTgp5mEzxS8iRgFTfcWmPNBMkC17peSKF9tPMo/Danganronpa 3 EP09 - Future Arc 5/1080p.m3u8", "name": "Danganronpa 3 EP09 - Future Arc 5", "playing": false },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/Qmde9qbdNTgp5mEzxS8iRgFTfcWmPNBMkC17peSKF9tPMo/Danganronpa 3 EP10 - Despair Arc 5/1080p.m3u8", "name": "Danganronpa 3 EP10 - Despair Arc 5", "playing": false },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/Qmde9qbdNTgp5mEzxS8iRgFTfcWmPNBMkC17peSKF9tPMo/Danganronpa 3 EP11 - Future Arc 6/1080p.m3u8", "name": "Danganronpa 3 EP11 - Future Arc 6", "playing": false },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/Qmde9qbdNTgp5mEzxS8iRgFTfcWmPNBMkC17peSKF9tPMo/Danganronpa 3 EP12 - Despair Arc 6/1080p.m3u8", "name": "Danganronpa 3 EP12 - Despair Arc 6", "playing": false },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/Qmde9qbdNTgp5mEzxS8iRgFTfcWmPNBMkC17peSKF9tPMo/Danganronpa 3 EP13 - Future Arc 7/1080p.m3u8", "name": "Danganronpa 3 EP13 - Future Arc 7", "playing": false },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/Qmde9qbdNTgp5mEzxS8iRgFTfcWmPNBMkC17peSKF9tPMo/Danganronpa 3 EP14 - Despair Arc 7/1080p.m3u8", "name": "Danganronpa 3 EP14 - Despair Arc 7", "playing": false },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/Qmde9qbdNTgp5mEzxS8iRgFTfcWmPNBMkC17peSKF9tPMo/Danganronpa 3 EP15 - Future Arc 8/1080p.m3u8", "name": "Danganronpa 3 EP15 - Future Arc 8", "playing": false },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/Qmde9qbdNTgp5mEzxS8iRgFTfcWmPNBMkC17peSKF9tPMo/Danganronpa 3 EP16 - Despair Arc 8/1080p.m3u8", "name": "Danganronpa 3 EP16 - Despair Arc 8", "playing": false },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/Qmde9qbdNTgp5mEzxS8iRgFTfcWmPNBMkC17peSKF9tPMo/Danganronpa 3 EP17 - Future Arc 9/1080p.m3u8", "name": "Danganronpa 3 EP17 - Future Arc 9", "playing": false },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/Qmde9qbdNTgp5mEzxS8iRgFTfcWmPNBMkC17peSKF9tPMo/Danganronpa 3 EP18 - Despair Arc 9/1080p.m3u8", "name": "Danganronpa 3 EP18 - Despair Arc 9", "playing": false },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/Qmde9qbdNTgp5mEzxS8iRgFTfcWmPNBMkC17peSKF9tPMo/Danganronpa 3 EP19 - Future Arc 10/1080p.m3u8", "name": "Danganronpa 3 EP19 - Future Arc 10", "playing": false },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/Qmde9qbdNTgp5mEzxS8iRgFTfcWmPNBMkC17peSKF9tPMo/Danganronpa 3 EP20 - Despair Arc 10/1080p.m3u8", "name": "Danganronpa 3 EP20 - Despair Arc 10", "playing": false },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/Qmde9qbdNTgp5mEzxS8iRgFTfcWmPNBMkC17peSKF9tPMo/Danganronpa 3 EP21 - Future Arc 11/1080p.m3u8", "name": "Danganronpa 3 EP21 - Future Arc 11", "playing": false },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/Qmde9qbdNTgp5mEzxS8iRgFTfcWmPNBMkC17peSKF9tPMo/Danganronpa 3 EP22 - Despair Arc 11/1080p.m3u8", "name": "Danganronpa 3 EP22 - Despair Arc 11", "playing": false },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/Qmde9qbdNTgp5mEzxS8iRgFTfcWmPNBMkC17peSKF9tPMo/Danganronpa 3 EP23 - Future Arc 12/1080p.m3u8", "name": "Danganronpa 3 EP23 - Future Arc 12", "playing": false },
+                    { "url": "https://cloudflare-ipfs.com/ipfs/Qmde9qbdNTgp5mEzxS8iRgFTfcWmPNBMkC17peSKF9tPMo/Danganronpa 3 EP24 - Hope Arc/1080p.m3u8", "name": "Danganronpa 3 EP24 - Hope Arc", "playing": false },
                 ],
                 autoplay: false,
                 current_episode: {},

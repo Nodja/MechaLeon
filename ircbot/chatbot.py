@@ -6,6 +6,13 @@ import traceback
 import sqlite3
 import datetime
 import os
+import asyncio
+import json
+
+from aiohttp import web
+from concurrent.futures import ThreadPoolExecutor
+
+app = web.Application()
 
 
 class TwitchBot(irc.bot.SingleServerIRCBot):
@@ -20,9 +27,10 @@ class TwitchBot(irc.bot.SingleServerIRCBot):
         print(f"Connecting to {server} on port {port}")
         irc.bot.SingleServerIRCBot.__init__(
             self, [(server, port, 'oauth:' + token)], username, username)
-        
-        self.db = sqlite3.connect('log.db')
+
+        self.db = sqlite3.connect('ircbot.db')
         self.cursor = self.db.cursor()
+        self._urlcache = [row[0] for row in self.cursor.execute('select url from links')]
 
     def on_welcome(self, c, e):
         print('Joining ' + self.channel)
@@ -43,15 +51,17 @@ class TwitchBot(irc.bot.SingleServerIRCBot):
                 traceback.print_exc()
         else:
             msg = e.arguments[0]
-            msg_id = 0
             user = ''
+            timestamp = 0
 
             for tag in e.tags:
                 if tag['key'] == 'display-name':
                     user = tag['value']
-                elif tag['key'] == 'id':
-                    msg_id = tag['value']
-            self.store_fanart(msg_id, msg, user)
+                elif tag['key'] == 'tmi-sent-ts':
+                    timestamp = int(tag['value']) / 1000.0
+                    timestamp = datetime.datetime.utcfromtimestamp(timestamp).isoformat()
+
+            self.store_message(timestamp, user, msg)
 
         return
 
@@ -61,30 +71,26 @@ class TwitchBot(irc.bot.SingleServerIRCBot):
         # if cmd == "fanart":
         #     c.privmsg(self.channel, 'test weee')
 
-    def store_fanart(self, msg_id, msg, user):
-        
+    def store_message(self, timestamp, user, msg):
+        urls = []
         for word in msg.split(' '):
-            match = re.match(
-                r'(?i:https?://(?:[^/:]+\.)?imgur\.com)(:\d+)?'
-                r'/(?:(?P<album>a/)|(?P<gallery>gallery/))?(?P<id>\w+)',
-                word
-            )
-            if match:
-                print('Storing fanart')
-                imgur = {
-                    'id': match.group('id'),
-                    'type': 'album' if match.group('album') else
-                            'gallery' if match.group('gallery') else
-                            'image',
-                }
-                now = datetime.datetime.now()
+            if word.lower().startswith('http'):
+                urls.append(word)
 
-                self.cursor.execute("INSERT INTO fanart values (?,?,?,?,?,?)", (self.channel, imgur['id'], imgur['type'],msg_id, msg, now.strftime("%Y-%m-%d %H:%M:%S")) )
+        if urls:
+            newurl = False
+            for url in urls:
+                if url not in self._urlcache:
+                    self._urlcache.append(url)
+                    self.cursor.execute('insert into links values(?)', (url, ))
+                    newurl = True
+
+            if newurl:
+                self.cursor.execute('insert into messages values(?,?,?,?)', (self.channel.strip(), timestamp, user, msg))
                 self.db.commit()
-                
 
 
-def main():
+async def runbot():
     auth = os.environ['IRC_AUTH'].split(' ')
 
     username = auth[0]
@@ -92,14 +98,50 @@ def main():
     token = auth[2]
     channel = auth[3]
 
-    bot = TwitchBot(username, client_id, token, channel)
-    bot.start()
-
-
-if __name__ == "__main__":
+    def _run():
+        bot = TwitchBot(username, client_id, token, channel)
+        bot.start()
 
     while True:
         try:
-            main()
+            await app.loop.run_in_executor(ThreadPoolExecutor(), _run)
         except Exception:
             traceback.print_exc()
+
+
+async def on_startup(app):
+    app.loop.create_task(runbot())
+
+
+async def get_messages(request):
+
+    stream = request.match_info['stream']
+    cursor = db.cursor()
+
+    streamdates = cursor.execute("select * from streams where name = ?", (stream, )).fetchone()
+    if streamdates:
+        start = streamdates[1]
+        end = streamdates[2]
+        messages = [row for row in cursor.execute(
+            """ select * from messages 
+            where channel = '#andersonjph'
+            and timestamp >= datetime(?) 
+            and timestamp <= datetime(?)""", (start, end))]
+    else:
+        if stream == "last":
+            now = datetime.datetime.utcnow()
+            start = now - datetime.timedelta(hours=12)
+            start = start.isoformat()
+            messages = [row for row in cursor.execute("select * from messages where channel = '#andersonjph' and timestamp >= datetime(?)", (start, ))]
+        else:
+            messages = []
+
+    messages = [{"channel": row[0], "timestamp": row[1], "name": row[2], "message": row[3]} for row in messages]
+    messages_json = json.dumps(messages)
+    return web.Response(text=messages_json, content_type='application/json')
+
+db = sqlite3.connect('ircbot.db')
+
+app.on_startup.append(on_startup)
+app.router.add_get('/messages/{stream}', get_messages)
+web.run_app(app, port=8011)

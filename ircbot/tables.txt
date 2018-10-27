@@ -1,10 +1,17 @@
-CREATE TABLE `fanart` (
+CREATE TABLE `messages` (
 	`channel`	TEXT,
-	`id`	TEXT,
-	`type`	TEXT,
-    `msg_id`	TEXT,
-	`message`	TEXT,
     `timestamp`	TEXT,
-	UNIQUE(channel, id, type) ON CONFLICT IGNORE
+	`nick`	TEXT,
+	`message`	TEXT
 );
 
+CREATE TABLE `links` (
+	`url`	TEXT,
+	UNIQUE(url) ON CONFLICT IGNORE
+);
+
+CREATE TABLE `streams` (
+	`name`	TEXT,
+	`start`	TEXT,
+	`end`	TEXT
+);

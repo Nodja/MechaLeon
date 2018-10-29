@@ -46,7 +46,7 @@
                             <v-layout align-center justify-end :class="{hide: !current_episode['url']}">
                                 <h2> {{ current_episode['name'] }}</h2>
                                 <v-spacer></v-spacer>
-                                <v-btn @click="openPopup()">Time Popup</v-btn>
+                                <v-btn @click="openPopup()" style="display: none;">Time Popup</v-btn>
                                 <span>
                                     Autoplay next episode
                                 </span>

@@ -1,2 +1,83 @@
-<a href="/streamschedule">Stream Schedule<br>
-<a href="/joevotes">Voting poll<br>
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/linkifyjs@2.1.6/dist/linkify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/linkifyjs@2.1.6/dist/linkify-element.min.js"></script>
+
+
+</head>
+
+<body>
+    <div id="app">
+        <v-app dark>
+            <v-content>
+
+                <v-container grid-list-md>
+                    <v-layout row wrap>
+                        <v-flex xs10 offset-xs1 text-xs-center>
+                            <h1> {{ page_title }} </h1>
+                            <v-data-table :items="projects" hide-headers hide-actions>
+                                <template slot="items" slot-scope="props">
+                                    <td class="text-xs-right"><a :href="props.item.link">{{ props.item.name }}</a> </td>
+                                    <td class="text-xs-left" v-linkified>{{ props.item.description }}</td>
+                                </template>
+                            </v-data-table>
+
+
+                        </v-flex>
+                    </v-layout>
+                    <v-layout child-flex>
+
+                    </v-layout>
+                    <v-flex text-xs-center><br>@Nodja <a href="https://github.com/Nodja/joevotes"></a></v-flex>
+                </v-container>
+            </v-content>
+        </v-app>
+
+
+    </div>
+
+    <script>
+
+        new Vue({
+            el: '#app',
+            mounted() {
+                document.title = this.page_title;
+            },
+            data: {
+                page_title: "Joe related mini-projects",
+                projects: [
+                    { name: "Joe Votes", description: "Discord Vote Poll", link: "/joevotes" },
+                    { name: "Stream Schedule", description: "List of games joe plans to play on stream and possible dates", link: "/streamschedule" },
+                    { name: "Twitch Link Aggregator", description: "Aggregates links in twitch chat during streams", link: "/twitch-aggregator" },
+                ]
+
+
+            },
+
+        })
+
+        window.Vue.directive('linkified', function (el, binding) {
+            linkifyElement(el, binding.value);
+        });
+
+
+    </script>
+    <style>
+        table.v-table tbody td,
+        table.v-table tbody th {
+            height: 25px;
+            padding-right: 10px !important;
+            padding-left: 0px !important;
+        }
+    </style>
+</body>
+
+</html>

@@ -77,7 +77,7 @@
             filters: {
                 timestamp: function (value) {
                     var m = moment(value);
-                    return m.format("YYYY-MM-DD hh:mm:ss")
+                    return m.local().format("YYYY-MM-DD hh:mm:ss")
                 }
             }
         })

@@ -168,9 +168,6 @@ async def get_messages(request):
             end = next_stream[1]
         else:
             end = None
-
-        print(start, end)
-
         params = (start, )
         qry = """select * from messages 
             where channel = '#andersonjph'

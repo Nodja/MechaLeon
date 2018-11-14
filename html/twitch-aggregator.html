@@ -9,8 +9,6 @@
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/linkifyjs@2.1.6/dist/linkify.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/linkifyjs@2.1.6/dist/linkify-element.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
 
 
@@ -30,7 +28,7 @@
                                 <template slot="items" slot-scope="props">
                                     <td class="text-xs-right">{{ props.item.timestamp | timestamp }} </td>
                                     <td class="text-xs-right">{{ props.item.name }} </td>
-                                    <td class="text-xs-left" v-linkified>{{ props.item.message }}</td>
+                                    <td class="text-xs-left" v-html="props.item.message"></td>
                                 </template>
                             </v-data-table>
 
@@ -71,7 +69,38 @@
                 get_messages(stream_id) {
                     axios
                         .get('/twitch-aggregator/messages/' + stream_id)
-                        .then(response => (this.messages = response.data))
+                        .then(response => {
+                            this.messages = response.data;
+                            for (var message of this.messages) {
+                                var _msghtml = '';
+                                var words = message.message.split(' ');
+                                for (word of words) {
+                                    if (word.match(/^http/ig)) {
+                                        _msghtml += '<span class="urlspan">'
+                                        _msghtml += `<a href="${word}" target="_blank">`
+                                        var host = /^(?:\w+\:\/\/)?([^\/]+)(.*)$/ig.exec(word)[1]
+                                        if (host.toLowerCase().endsWith('imgur.com'))
+                                            _msghtml += '<img src="/static/Imgur_icon.svg" class="urlicon"></img>'
+                                        else if (host.toLowerCase().endsWith('twitch.tv'))
+                                            _msghtml += '<img src="/static/Twitch_icon.svg" class="urlicon"></img>'
+                                        else if (host.toLowerCase().endsWith('youtu.be') || host.toLowerCase().endsWith('youtube.com'))
+                                            _msghtml += '<img src="/static/youtube_ircon.png" class="urlicon"></img>'
+                                        else if (host.toLowerCase().endsWith('discordapp.com'))
+                                            _msghtml += '<img src="/static/Discord-Logo-Color.png" class="urlicon"></img>'
+                                            
+                                        _msghtml += `${word}</a> `
+                                        _msghtml += '</span>'
+                                    }
+                                    else
+                                        _msghtml += word + ' '
+
+                                }
+                                message.message = _msghtml;
+                                console.log(words)
+                            }
+
+
+                        })
                 }
             },
             filters: {
@@ -81,12 +110,6 @@
                 }
             }
         })
-
-        window.Vue.directive('linkified', function (el, binding) {
-            linkifyElement(el, binding.value);
-        });
-
-
     </script>
     <style>
         table.v-table tbody td,
@@ -94,6 +117,15 @@
             height: 25px;
             padding-right: 10px !important;
             padding-left: 0px !important;
+        }
+
+        .urlspan {
+            display: inline-block;
+        }
+
+        .urlicon {
+            height: 15px;
+            vertical-align: middle;
         }
     </style>
 </body>

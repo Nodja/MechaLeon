@@ -119,6 +119,9 @@ async def check_live():
     token = auth[2]
     channel = auth[3].strip()
 
+    # keep heroku alive
+    r = requests.get("http://mechaleon.herokuapp.com/")
+
     # Get the channel id, we will need this for v5 API calls
     url = 'https://api.twitch.tv/kraken/users?login=' + channel
     headers = {'Client-ID': client_id, 'Accept': 'application/vnd.twitchtv.v5+json'}
